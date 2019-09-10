@@ -1,0 +1,308 @@
+ 
+    body {
+      height: 100%;
+      width: 100%; 
+      margin: 0;
+    }
+
+ .bgimg1 {
+      min-height:720px; 
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: -210px -5px;
+      position: relative;
+      background-image: url('http://pspatil.freevar.com/Praveen/CSCI571/HomeWorks/Homework3/images/coffee2.jpg');
+      z-index: -2;
+      /* transform: translateZ(-1px) scale(1.10);
+      -webkit-transform: translateZ(-1px) scale(1.10);
+      -moz-transform: translateZ(-1px) scale(1.10);*/
+      
+    }
+
+
+     #face{
+        position: absolute;
+        margin-top: 318px;
+        margin-left: 490px;
+        width: 470px;
+        height: 270px;
+        background-color: white;
+        color: indigo;
+       
+    }
+
+    #face img {
+      position: absolute;
+      clip: rect(0px,180px,180px,0px);
+      margin-top: 50px;
+      margin-left: 29px;
+
+    }
+
+    #data{
+          margin-left: 170px;
+          margin-top: 48px;
+          font-family: 'Playfair Display', serif;
+
+    }
+
+    #food{
+          margin-left: 170px;
+          font-size: 35px;
+          font-weight: 100;
+          margin-top: -11px;   
+          font-family: 'auto',sans-serif;
+    }
+
+    #stylist{
+              margin-left: 170px;
+              font-size: 35px;
+              font-weight: bold;
+              margin-top: -36px;
+              font-family: 'auto',sans-serif;
+    }
+
+    #bar{
+            margin-left: 170px;
+            font-size: 35px;
+            font-weight: bold;
+            margin-top: -50px;
+
+      }
+    #port{
+              margin-left: 170px;
+              font-size: 19px;
+              font-weight: normal;
+              margin-top: -4px;
+              font-family: 'auto',sans-serif;
+
+    }
+    #bgimg2 {
+      background-image: url(http://pspatil.freevar.com/Praveen/CSCI571/HomeWorks/Homework3/images/coffee1.jpg);
+      min-height: 1300px;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: -450px center;
+      position: relative;
+      z-index: -3;
+     /* transform: translateZ(-1px) scale(1.1);
+      -webkit-transform: translateZ(-1px) scale(1.1);
+      -moz-transform: translateZ(-1px) scale(1.1);
+      transform-style: preserve-3d;*/
+
+    }
+    #header {
+      padding-left: 120px;
+      background-color: white;
+      position: fixed;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    #title {
+      font-family: 'Playfair Display', serif;
+      color: indigo;
+      margin-left: 50px;
+      margin-top: 23px;
+      font-weight: lighter;
+      font-size: 22px;
+    }
+    #links{
+          margin-left: 600px;
+          margin-top: -43px;
+          margin-bottom: 30px;
+          font-family: 'auto', serif;
+          color: indigo;
+    }
+    li {
+         display: inline-block;
+          padding-left: 4%;
+          padding-right: 0.1%;
+    }
+    li a {
+      text-decoration: none;
+      font-family: 'Helvetica Neue', serif;
+      font-weight: normal;
+      font-size: 15px;
+      width: 10%;
+    }
+    li a.black {
+      color: darkgrey;
+    }
+    li a.bright {
+     color: indigo;
+    }
+    
+    * {
+    box-sizing: border-box;
+    }
+
+    #part1{
+    width: 1470px;
+    }
+
+    .part2{
+        height: 400px;
+            width: 1470px;
+
+    }
+
+    .part3{
+      padding: 10px;
+      color: aliceblue;
+      height: 500px;
+      text-align: center;
+    }
+
+    .part4{
+      height: 500px;
+      width: 1470px;
+
+    }
+
+    #p1{
+        margin-top: 100px;
+        margin-left: -1050px;
+        font-family: 'auto',sans-serif;
+            font-size: larger;
+    font-weight: bold;
+
+    }
+
+    #p2{
+            margin-top: 30px;
+            margin-left: -110px;
+            font-family: auto;
+            font-family: 'auto',sans-serif;
+            font-size: 50px;
+    }
+
+     #p21{
+          margin-top: -50px;
+          margin-left: -155px;
+          font-family: auto;
+          font-family: 'auto',sans-serif;
+          font-size: 50px;
+    }
+
+     #p22{
+        margin-top: -45px;
+        margin-left: -25px;
+        font-family: auto;
+        font-family: 'auto',sans-serif;
+        font-size: 50px;
+    }
+
+    #p3{
+        
+           margin-left: 161px;
+              color: #48047C;
+    margin-top: 225px;
+        font-weight: bolder;
+    font-size: 17px;
+          
+    }
+
+    #p4{
+           
+          margin-left: 170px;
+          color: #48047C;
+          font-size: 50px;
+          margin-top: -10px;
+          font-family: 'Helvetica Neue',sans-serif;
+          
+    }
+
+     #p5{
+           
+              margin-left: 175px;
+    color: indigo;
+    margin-top: -50px;
+     font-family: 'Helvetica Neue',sans-serif;
+         font-size: 18px;
+          
+    }
+
+    #p6{
+           
+          margin-left: 175px;
+          color: #701cae;
+          margin-top: 190px;
+          font-family: 'Helvetica Neue',sans-serif;
+          
+    }
+
+    .form{
+             color: indigo;
+    margin-right: 180px;
+    margin-left: 750px;
+    margin-top: -335px;
+    }
+
+    input[type=text], select, textarea {
+    /*width: 95%;
+    padding: 15px;*/
+    border: 2px solid #AE91C4;
+    border-radius: 2px;
+    resize: vertical;
+
+    width: 110%;
+    padding: 12px 15px;
+    margin: 3px 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    font-family: 'auto',sans-serif;
+    }
+
+    input[type=submit] {
+        background-color: #48047C;
+        color: white;
+        padding: 7px 20px;
+        border: none;
+        cursor: pointer;
+        float: right;
+        margin-right: -50px;
+        font-style: italic;
+        font-size: 20px;
+        font-family: 'auto',serif;
+    }
+
+    ::placeholder {
+      color: #541C7E;
+      opacity: 1;
+    }
+
+    input[type=submit]:hover {
+      background-color: #4b0082;
+    }
+
+
+
+    .column h2{
+          font-family: 'auto',sans-serif;
+          font-weight: bolder;
+          font-size: xx-large;
+          /*padding-top: 260px;*/
+          margin-top: -10px;
+          margin-left: 60px;
+
+    }
+
+    .column p{
+          font-family: 'auto',sans-serif;
+          padding-top: 300px;
+          margin-left: 60px;
+    }
+
+
+    .column {
+      float: left;
+      width: 33.33%;
+      padding: 10px;
+      color: aliceblue;
+      height: 750px;
+    }
+
+    .numbers{
+      font-family: 'Raleway', sans-serif;
+    }
