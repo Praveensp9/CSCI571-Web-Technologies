@@ -13,6 +13,7 @@
       position: relative;
       background-image: url('http://pspatil.freevar.com/Praveen/CSCI571/HomeWorks/Homework3/images/coffee2.jpg');
       z-index: -2;
+      transform : translate(-1px) scale(1.10);
       /* transform: translateZ(-1px) scale(1.10);
       -webkit-transform: translateZ(-1px) scale(1.10);
       -moz-transform: translateZ(-1px) scale(1.10);*/
