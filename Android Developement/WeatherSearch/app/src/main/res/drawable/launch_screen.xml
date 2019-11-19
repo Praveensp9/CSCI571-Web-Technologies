@@ -15,4 +15,9 @@
 
     </item>
 
+    <item>
+        <bitmap android:src="@drawable/darksky"
+            android:gravity="bottom" />
+    </item>
+
 </layer-list>

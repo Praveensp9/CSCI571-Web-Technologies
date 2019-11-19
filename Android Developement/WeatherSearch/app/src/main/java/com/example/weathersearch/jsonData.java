@@ -1,5 +1,7 @@
 package com.example.weathersearch;
 
+import java.text.DecimalFormat;
+
 public class jsonData {
     public String getTemperature() {
         return temperature;
@@ -40,6 +42,10 @@ public class jsonData {
     }
 
     public void setHumidity(String humidity) {
+        double  h = Double.parseDouble(humidity);
+        h = Math.round(h*100);
+        int val = (int)h;
+        humidity = (val)+"%";
         this.humidity = humidity;
     }
 
@@ -48,6 +54,10 @@ public class jsonData {
     }
 
     public void setWindSpeed(String windSpeed) {
+        double  w = Double.parseDouble(windSpeed);
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        w = Double.valueOf(twoDForm.format(w));
+        windSpeed = (w) + " mph";
         this.windSpeed = windSpeed;
     }
 
@@ -56,6 +66,10 @@ public class jsonData {
     }
 
     public void setPressure(String pressure) {
+        double  p = Double.parseDouble(pressure);
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        p = Double.valueOf(twoDForm.format(p));
+        pressure = (p) + " mb";
         this.pressure = pressure;
     }
 
@@ -64,6 +78,10 @@ public class jsonData {
     }
 
     public void setVisibility(String visibility) {
+        double  v = Double.parseDouble(visibility);
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+        v = Double.valueOf(twoDForm.format(v));
+        visibility = (v) + " km";
         this.visibility = visibility;
     }
 

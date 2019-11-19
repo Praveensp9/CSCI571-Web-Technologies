@@ -2,4 +2,8 @@
     <string name="app_name">WeatherApp</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="humidity">Humidity</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="visibility">Visibility</string>
+    <string name="pressure">Pressure</string>
 </resources>
