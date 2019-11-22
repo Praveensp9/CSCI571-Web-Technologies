@@ -1,10 +1,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/mysearch"
+        app:showAsAction="collapseActionView|always"
+        android:title="@string/search_name"
+        android:icon="@drawable/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView">
+    </item>
+
+</menu>
+
+<!--
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
         android:id="@+id/search"
         android:icon="@drawable/search"
         app:showAsAction="ifRoom"
         android:onClick="onComposeAction"
         android:title="Compose">
     </item>
-</menu>
+</menu>-->

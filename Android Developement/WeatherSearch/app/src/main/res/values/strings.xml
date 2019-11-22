@@ -6,4 +6,11 @@
     <string name="wind_speed">Wind Speed</string>
     <string name="visibility">Visibility</string>
     <string name="pressure">Pressure</string>
+    <string name="today">TODAY</string>
+    <string name="week">WEEKLY</string>
+    <string name="photo">PHOTOS</string>
+    <string name="nav_home">nav</string>
+    <string name="search_hint">Search...</string>
+    <string name="search_name">CitySearch</string>
+    <string name="favorite">favorite</string>
 </resources>

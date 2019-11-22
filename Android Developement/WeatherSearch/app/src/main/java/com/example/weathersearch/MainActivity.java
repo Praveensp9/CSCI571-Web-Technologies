@@ -1,19 +1,25 @@
 package com.example.weathersearch;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
+
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.MenuInflater;
+
 import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -22,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,15 +36,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textView;
-    private ImageView imageview;
-    private RecyclerView recyclerView;
-    private cardViewAdapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
     private jsonData jsondata = new jsonData();
     private dayData day0;
     private dayData day1;
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private dayData day5;
     private dayData day6;
     private dayData day7;
+    private AutoCompleteAdapter autoCompleteAdapter;
+    private Handler handler;
 
     private int setIcon(String icon){
         if(icon.equals("clear-night")) {
@@ -82,111 +88,55 @@ public class MainActivity extends AppCompatActivity {
         return R.drawable.ic_launcher;
     }
 
+    public Bundle getMyData() {
+        Bundle hm = new Bundle();
+        hm.putString("icon",jsondata.getIcon());
+        hm.putString("temperature",jsondata.getTemperature());
+        hm.putString("summary",jsondata.getSummary());
+        hm.putString("city",jsondata.getCity());
+        hm.putString("humidity",jsondata.getHumidity());
+        hm.putString("visibility",jsondata.getVisibility());
+        hm.putString("windspeed",jsondata.getWindSpeed());
+        hm.putString("pressure",jsondata.getPressure());
+        hm.putSerializable("seriliazable",jsondata);
+        hm.putSerializable("day0",day0);
+        hm.putSerializable("day1",day1);
+        hm.putSerializable("day2",day2);
+        hm.putSerializable("day3",day3);
+        hm.putSerializable("day4",day4);
+        hm.putSerializable("day5",day5);
+        hm.putSerializable("day6",day6);
+        hm.putSerializable("day7",day7);
+
+        return hm;
+    }
+    private static boolean flag = true;
     private void setData(){
 
-        ArrayList<cardView> cardViews = new ArrayList<>();
-        String icon = jsondata.getIcon();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.favoriteViewpager);
+        FavoriteAdapter adapter = new FavoriteAdapter(getSupportFragmentManager());
+        System.out.println("adapter: "+adapter);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(10);
 
-        cardViews.add((new cardView(setIcon(icon), jsondata.getTemperature(), jsondata.getSummary(), jsondata.getCity(),
-                R.drawable.humidity, R.drawable.windspeed, R.drawable.visibility, R.drawable.pressure,
-                jsondata.getHumidity(), jsondata.getWindSpeed(), jsondata.getVisibility(), jsondata.getPressure(),
-                day0, day1, day2, day3, day4, day5, day6, day7
-        )));
+        adapter.AddFragment(new FavoriteFragment(),jsondata.getCity());
+        adapter.notifyDataSetChanged();
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.favoritetabs);
+        tabLayout.setupWithViewPager(viewPager);
 
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setNestedScrollingEnabled(false);
+        SharedPreferences mycities = getSharedPreferences("mycities",MODE_PRIVATE);
+        HashSet<String> cities = (HashSet<String>) mycities.getStringSet("favoriteCities",new HashSet<String>());
 
-        layoutManager = new LinearLayoutManager(this);
-        adapter = new cardViewAdapter(cardViews);
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-        CardView cardview = findViewById(R.id.card_view4);
-        cardview.setVisibility(View.VISIBLE);
-        ProgressBar progressBar = findViewById(R.id.progress1);
-        progressBar.setVisibility(View.GONE);
-
-        adapter.setOnItemClickListener(new cardViewAdapter.OnItemClickListerner() {
-            @Override
-            public void onItemClick(int position) {
-                System.out.println("ClickedCard");
-                Intent intent = new Intent(MainActivity.this,NextActivity.class);
-                startActivity(intent);
+        if(cities.size() != 0){
+            for(String city:cities) {
+                System.out.println("Share "+ city);
+                adapter.AddFragment(new FavoriteFragment2(), city);
             }
-        });
-
-        textView = findViewById(R.id.date1);
-        textView.setText(day0.dat);
-        textView = findViewById(R.id.date2);
-        textView.setText(day1.dat);
-        textView = findViewById(R.id.date3);
-        textView.setText(day2.dat);
-        textView = findViewById(R.id.date4);
-        textView.setText(day3.dat);
-        textView = findViewById(R.id.date5);
-        textView.setText(day4.dat);
-        textView = findViewById(R.id.date6);
-        textView.setText(day5.dat);
-        textView = findViewById(R.id.date7);
-        textView.setText(day6.dat);
-        textView = findViewById(R.id.date8);
-        textView.setText(day7.dat);
-
-
-        imageview = findViewById(R.id.img1);
-        imageview.setImageResource(day0.icon);
-        imageview = findViewById(R.id.img2);
-        imageview.setImageResource(day1.icon);
-        imageview = findViewById(R.id.img3);
-        imageview.setImageResource(day2.icon);
-        imageview = findViewById(R.id.img4);
-        imageview.setImageResource(day3.icon);
-        imageview = findViewById(R.id.img5);
-        imageview.setImageResource(day4.icon);
-        imageview = findViewById(R.id.img6);
-        imageview.setImageResource(day5.icon);
-        imageview = findViewById(R.id.img7);
-        imageview.setImageResource(day6.icon);
-        imageview = findViewById(R.id.img8);
-        imageview.setImageResource(day7.icon);
-
-        textView = findViewById(R.id.min1);
-        textView.setText(day0.minTemp);
-        textView = findViewById(R.id.min2);
-        textView.setText(day1.minTemp);
-        textView = findViewById(R.id.min3);
-        textView.setText(day2.minTemp);
-        textView = findViewById(R.id.min4);
-        textView.setText(day3.minTemp);
-        textView = findViewById(R.id.min5);
-        textView.setText(day4.minTemp);
-        textView = findViewById(R.id.min6);
-        textView.setText(day5.minTemp);
-        textView = findViewById(R.id.min7);
-        textView.setText(day6.minTemp);
-        textView = findViewById(R.id.min8);
-        textView.setText(day7.minTemp);
-
-
-        textView = findViewById(R.id.max1);
-        textView.setText(day0.maxTemp);
-        textView = findViewById(R.id.max2);
-        textView.setText(day1.maxTemp);
-        textView = findViewById(R.id.max3);
-        textView.setText(day2.maxTemp);
-        textView = findViewById(R.id.max4);
-        textView.setText(day3.maxTemp);
-        textView = findViewById(R.id.max5);
-        textView.setText(day4.maxTemp);
-        textView = findViewById(R.id.max6);
-        textView.setText(day5.maxTemp);
-        textView = findViewById(R.id.max7);
-        textView.setText(day6.maxTemp);
-        textView = findViewById(R.id.max8);
-        textView.setText(day7.maxTemp);
-
+        }
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -227,8 +177,7 @@ public class MainActivity extends AppCompatActivity {
     private void currentLocation(final String lat, final String lon){
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        // http://ec2-3-135-53-103.us-east-2.compute.amazonaws.com/
-        String url ="http://ec2-3-18-230-248.us-east-2.compute.amazonaws.com:8081/current";
+        String url ="http://ec2-3-135-53-103.us-east-2.compute.amazonaws.com:8082/current";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -242,11 +191,16 @@ public class MainActivity extends AppCompatActivity {
                             jsondata.setTemperature(json.getJSONObject("currently").getString("temperature")+"°F");
                             jsondata.setSummary(json.getJSONObject("currently").getString("summary"));
                             jsondata.setIcon(json.getJSONObject("currently").getString("icon"));
-                            jsondata.setCity("Los Angeles,CA,USA");
+                            jsondata.setCity("New York,NY,USA");
                             jsondata.setHumidity(json.getJSONObject("currently").getString("humidity"));
                             jsondata.setWindSpeed(json.getJSONObject("currently").getString("windSpeed"));
                             jsondata.setVisibility(json.getJSONObject("currently").getString("visibility"));
                             jsondata.setPressure(json.getJSONObject("currently").getString("pressure"));
+                            jsondata.setPrecipitation(json.getJSONObject("currently").getString("precipIntensity"));
+                            jsondata.setCloudCover(json.getJSONObject("currently").getString("cloudCover"));
+                            jsondata.setOzone(json.getJSONObject("currently").getString("ozone"));
+                            jsondata.setWeeklySummary(json.getJSONObject("daily").getString("summary"));
+                            jsondata.setWeeklyIcon(json.getJSONObject("daily").getString("icon"));
                             getDayData(json.getJSONObject("daily").getJSONArray("data"));
                             setData();
                         } catch (JSONException e) {
@@ -274,6 +228,45 @@ public class MainActivity extends AppCompatActivity {
         };
         queue.add(stringRequest);
     }
+
+    private void makeApiCall(String text) {
+
+        AutoCompleteApiCall.make(this, text, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                List<String> stringList = new ArrayList<>();
+                try {
+                    JSONObject json = new JSONObject(response);
+
+                    System.out.println("JSONOBJECT: "+json.getJSONArray("predictions").getJSONObject(0).getString("description"));
+                    System.out.println("JSONOBJECT: "+json.getJSONArray("predictions").getJSONObject(1).getString("description"));
+                    System.out.println("JSONOBJECT: "+json.getJSONArray("predictions").getJSONObject(2).getString("description"));
+                    System.out.println("JSONOBJECT: "+json.getJSONArray("predictions").getJSONObject(3).getString("description"));
+                    System.out.println("JSONOBJECT: "+json.getJSONArray("predictions").getJSONObject(4).getString("description"));
+
+                    JSONArray array = json.getJSONArray("predictions");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject row = array.getJSONObject(i);
+                        stringList.add(row.getString("description"));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                //IMPORTANT: set data here and notify
+                autoCompleteAdapter.setData(stringList);
+                autoCompleteAdapter.notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -307,19 +300,166 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        CardView cardview = findViewById(R.id.card_view4);
-        cardview.setVisibility(View.GONE);
+    }
 
+    @Override
+    protected void onPostResume() {
+
+        super.onPostResume();
+        System.out.println("SharedONResume");
+        RequestQueue currentLocationQueue = Volley.newRequestQueue(this);
+        String location ="http://ip-api.com/json";
+
+        StringRequest locationRequest = new StringRequest(Request.Method.GET, location,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Respanseee : " + response);
+                        try {
+                            JSONObject loc = new JSONObject(response);
+                            String lat = loc.getString("lat");
+                            String lon = loc.getString("lon");
+                            currentLocation(lat,lon);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("errarr: " +error);
+            }
+
+        });
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.customer_toolbar2, menu);
+//        return true;
+//    }
+
+
+//    public void onComposeAction(MenuItem mi) {
+//        // handle click here
+//        System.out.println("Searchhh button is clicked");
+//        onSearchRequested();
+//    }
+
+    @Override
+    public boolean onSearchRequested() {
+        return super.onSearchRequested();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.customer_toolbar2, menu);
-        return true;
-    }
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.customer_toolbar2, menu);
 
-    public void onComposeAction(MenuItem mi) {
-        // handle click here
-        System.out.println("Search button is clicked");
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.mysearch).getActionView();
+
+        // Assumes current activity is the searchable activity
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
+        View searchPlate = searchView.findViewById(searchPlateId);
+
+        if (searchPlate!=null) {
+            searchPlate.setBackgroundColor(Color.DKGRAY);
+
+            int searchTextId = searchPlate.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+            TextView searchText = (TextView) searchPlate.findViewById(searchTextId);
+            if (searchText!=null) {
+                searchText.setTextColor(Color.WHITE);
+                searchText.setHintTextColor(Color.WHITE);
+            }
+        }
+
+//        final SearchView.SearchAutoComplete searchAutoComplete = (SearchView.SearchAutoComplete)searchView.findViewById(R.id.search_src_text);
+//        searchAutoComplete.setBackgroundColor(Color.DKGRAY);
+//        searchAutoComplete.setTextColor(Color.WHITE);
+//        searchAutoComplete.setDropDownBackgroundResource(R.color.white);
+//
+//        String dataArr[] = {"Seattle" , "Bangalore" , "Mumbai", "Hongkong", "Delhi"};
+//        ArrayAdapter<String> newsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, dataArr);
+//        searchAutoComplete.setAdapter(newsAdapter);
+//
+//        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
+//                String queryString=(String)adapterView.getItemAtPosition(itemIndex);
+//                searchAutoComplete.setText("" + queryString);
+//
+//            }
+//        });
+
+        final SearchView.SearchAutoComplete searchAutoComplete = (SearchView.SearchAutoComplete)searchView.findViewById(R.id.search_src_text);
+        searchAutoComplete.setBackgroundColor(Color.DKGRAY);
+        searchAutoComplete.setTextColor(Color.WHITE);
+        searchAutoComplete.setDropDownBackgroundResource(R.color.white);
+
+        autoCompleteAdapter = new AutoCompleteAdapter(this, android.R.layout.simple_dropdown_item_1line);
+        searchAutoComplete.setAdapter(autoCompleteAdapter);
+
+        searchAutoComplete.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String queryString=(String)parent.getItemAtPosition(position);
+                        searchAutoComplete.setText("" + queryString);
+                    }
+                });
+
+
+        searchAutoComplete.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int
+                    count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                handler.removeMessages(100);
+                handler.sendEmptyMessageDelayed(100,300);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == 100) {
+                    if (!TextUtils.isEmpty(searchAutoComplete.getText())) {
+                        makeApiCall(searchAutoComplete.getText().toString());
+                    }
+                }
+                return false;
+            }
+        });
+
+            // Below event is triggered when submit search query.
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                System.out.println("Search keyword is " + query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+
+        return true;
     }
 }

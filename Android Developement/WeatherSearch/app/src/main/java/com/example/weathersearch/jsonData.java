@@ -1,8 +1,13 @@
 package com.example.weathersearch;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
-public class jsonData {
+public class jsonData implements Serializable {
+
+    public jsonData() {
+    }
+
     public String getTemperature() {
         return temperature;
     }
@@ -10,8 +15,6 @@ public class jsonData {
     public void setTemperature(String temperature) {
         this.temperature = temperature;
     }
-
-    String temperature;
 
     public String getSummary() {
         return summary;
@@ -85,6 +88,51 @@ public class jsonData {
         this.visibility = visibility;
     }
 
+    public String getPrecipitation() {
+        return precipitation;
+    }
+
+    public void setPrecipitation(String precipitation) {
+        this.precipitation = precipitation;
+    }
+
+    public String getCloudCover() {
+        return CloudCover;
+    }
+
+    public void setCloudCover(String cloudCover) {
+        CloudCover = cloudCover;
+    }
+
+    public String getOzone() {
+        return Ozone;
+    }
+
+    public void setOzone(String ozone) {
+        Ozone = ozone;
+    }
+
+    public String getWeeklySummary() {
+        return weeklySummary;
+    }
+
+    public void setWeeklySummary(String weeklySummary) {
+        this.weeklySummary = weeklySummary;
+    }
+
+    public String getWeeklyIcon() {
+        return weeklyIcon;
+    }
+
+    public void setWeeklyIcon(String weeklyIcon) {
+        this.weeklyIcon = weeklyIcon;
+    }
+
+
+    String temperature;
+    String precipitation;
+    String CloudCover;
+    String Ozone;
     String humidity;
     String windSpeed;
     String pressure;
@@ -92,5 +140,8 @@ public class jsonData {
     String summary;
     String City;
     String icon;
+    String weeklySummary;
+    String weeklyIcon;
+
 
 }

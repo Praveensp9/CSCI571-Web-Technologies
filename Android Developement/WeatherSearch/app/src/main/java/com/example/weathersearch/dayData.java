@@ -1,9 +1,10 @@
 package com.example.weathersearch;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class dayData{
+public class dayData implements Serializable {
     String dat;
     int icon;
     String minTemp;

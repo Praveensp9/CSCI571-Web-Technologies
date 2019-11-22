@@ -3,8 +3,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
@@ -22,7 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class NextActivity extends AppCompatActivity{
+public class SearchNextActivity extends AppCompatActivity{
     static final int NUMBER_OF_PAGES = 3;
 
     private jsonData jsondata;
@@ -49,11 +47,11 @@ public class NextActivity extends AppCompatActivity{
 
             switch (position) {
                 case 0:
-                    return FirstFragment.newInstance(0);
+                    return SearchFirstFragment.newInstance(0);
                 case 1:
-                    return SecondFragment.newInstance(1);
+                    return SearchSecondFragment.newInstance(1);
                 case 2:
-                    return ThirdFragment.newInstance(2);
+                    return SearchThirdFragment.newInstance(2);
                 default:
                     return null;
             }
@@ -81,7 +79,7 @@ public class NextActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_next);
+        setContentView(R.layout.activity_searchnext);
         progressBar = findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
         Intent intent=getIntent();
@@ -180,7 +178,8 @@ public class NextActivity extends AppCompatActivity{
     public void onComposeAction(MenuItem mi) {
         // handle click here
         System.out.println("Twitter button is clicked");
-        String tweet = "https://twitter.com/intent/tweet?text=Check%20out%20Los%20Angeles%27s%20Weather!%20It%20is%2068.56%C2%B0%20F!%20&hashtags=CSCI571WeatherSearch";
+        String mycity = jsondata.getCity().split(",")[0];
+        String tweet = "https://twitter.com/intent/tweet?text=Check%20out%20"+mycity+"%27s%20Weather!%20It%20is%2068.56%C2%B0%20F!%20&hashtags=CSCI571WeatherSearch";
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(tweet));
         startActivity(browserIntent);
     }
